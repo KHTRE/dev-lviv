@@ -1,58 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-function App() {
+import './App.scss';
+import './styles/general.scss';
+import Navigation from './components/Navigation';
+import WrongPage from './components/WrongPage';
+import Converter from './components/Converter';
+import Exchange from './components/Exchange';
+import { getUserLocation } from './Api/Location';
+import { getCurrencyCode } from './Api/Rates';
+
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const locationInfo = await getUserLocation();
+      const userCountryCode = locationInfo.countryCode;
+      const userCurrencyCode = getCurrencyCode(userCountryCode);
+
+      dispatch({ type: 'SET_USER_CURRENCY', payload: userCurrencyCode });
+    })();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <div className="App__sidebar">
+        <h1>Exchanges rates</h1>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Converter />} />
+          <Route path="/exchange-rates" element={<Exchange />} />
+          <Route path="*" element={<WrongPage />} />
+        </Routes>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
