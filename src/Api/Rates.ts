@@ -1,6 +1,6 @@
 import { codes } from './CurrencyCodes';
 
-const GET_RATES_BASE_URL = 'https://v65.exchangerate-api.com/v6/';
+const GET_RATES_BASE_URL = 'https://v6.exchangerate-api.com/v6/';
 const API_KEY = '95b20943d764a3594a574bb0';
 
 export const getExchangeRates = (userCurrency: string): Promise<Rates> => {
