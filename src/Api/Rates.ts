@@ -8,7 +8,9 @@ export const getExchangeRates = (userCurrency: string): Promise<Rates> => {
   console.log('req to rates server'); // убедимся, что нет лишних запросов
 
   return fetch(`${GET_RATES_BASE_URL}${API_KEY}/latest/${userCurrency}`)
-    .then(responce => responce.json());
+    .then(responce => responce.json())
+    // eslint-disable-next-line no-console
+    .catch(e => console.log(e));
 };
 
 export const getCurrencyCode = (userCountry: string) => {
