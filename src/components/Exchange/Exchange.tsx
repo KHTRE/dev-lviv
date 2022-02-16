@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getExchangeRates } from '../../Api/Rates';
@@ -34,7 +35,7 @@ export const Exchange = () => {
       ));
 
       return (currencyList.map(rate => (
-        <option key={rate[0]} value={rate[0]}>{rate[0]}</option>
+        <option key={v4()} value={rate[0]}>{rate[0]}</option>
       )));
     }
 
@@ -67,10 +68,8 @@ export const Exchange = () => {
       {error && <span>{error}</span>}
       <ul>
         {exchangeRates.map(rate => (
-          <li key={rate[0]}>
-            {rate[0]}
-            --
-            {rate[1]}
+          <li key={v4()}>
+            {`1 ${rate[0]} = ${rate[1]} ${userCurrencyCode}`}
           </li>
         ))}
       </ul>
