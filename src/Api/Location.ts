@@ -5,5 +5,7 @@ export const getUserLocation = (): Promise<Location> => {
   console.log('req to location server'); // убедимся, что нет лишних запросов
 
   return fetch(GET_LOCATION_URL)
-    .then(responce => responce.json());
+    .then(responce => responce.json())
+    // eslint-disable-next-line no-console
+    .catch(e => console.log(e));
 };
