@@ -54,7 +54,7 @@ export const Converter = () => {
       const message = `${moneyAmount} ${exchangeFrom} is equal to ${changeAmount} ${exchangeTo}`;
 
       return (
-        <h4>{message}</h4>
+        <span>{message}</span>
       );
     }
 
