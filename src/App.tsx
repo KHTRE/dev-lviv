@@ -1,15 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
 
-import './App.scss';
-import './styles/general.scss';
 import Navigation from './components/Navigation';
 import WrongPage from './components/WrongPage';
 import Converter from './components/Converter';
-import Exchange from './components/Exchange';
 import { getUserLocation } from './Api/Location';
 import { getCurrencyCode } from './Api/Rates';
+
+const LazyExchange = lazy(() => import('./components/Exchange'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,17 +23,20 @@ const App = () => {
     })();
   }, []);
 
+  const getLazyExchange = () => (
+    <Suspense fallback={<div>Loading data...</div>}>
+      <LazyExchange />
+    </Suspense>
+  );
+
   return (
-    <div className="App">
-      <div className="App__sidebar">
-        <h1>Exchanges rates</h1>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Converter />} />
-          <Route path="/exchange-rates" element={<Exchange />} />
-          <Route path="*" element={<WrongPage />} />
-        </Routes>
-      </div>
+    <div className="d-flex flex-wrap justify-content-center py-3 mb-4">
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Converter />} />
+        <Route path="/exchange-rates" element={getLazyExchange()} />
+        <Route path="*" element={<WrongPage />} />
+      </Routes>
     </div>
   );
 };

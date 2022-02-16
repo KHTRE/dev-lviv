@@ -1,5 +1,4 @@
-import { spawn } from 'child_process';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getExchangeRatesForTwo } from '../../Api/Rates';
 
@@ -41,36 +40,47 @@ export const Converter = () => {
     (async () => {
       const rateForTwo = await getExchangeRatesForTwo(info[1], info[3]);
 
-      dispatch({ type: 'SET_EXCHANGE_RATE', payload: rateForTwo.conversion_rate });
+      if (rateForTwo.result !== 'error') {
+        dispatch({ type: 'SET_EXCHANGE_RATE', payload: rateForTwo.conversion_rate });
+      } else {
+        setInputError('We got some error while loading data from server');
+      }
     })();
   };
 
   const getExchangeRateMessage = () => {
     if (exchangeRate && typeof moneyAmount === 'number') {
-      const changeAmount = moneyAmount * exchangeRate;
+      const changeAmount = Math.round(moneyAmount * exchangeRate * 100) / 100;
       const message = `${moneyAmount} ${exchangeFrom} is equal to ${changeAmount} ${exchangeTo}`;
 
       return (
-        <span>{message}</span>
+        <h4>{message}</h4>
       );
     }
 
-    return (
-      <span>Please set correct money amount</span>
-    );
+    return '';
   };
 
   return (
-    <>
-      <form onSubmit={event => getRates(event)}>
-        <input
-          type="text"
-          value={userReq}
-          onChange={handleUserInput}
-        />
-        <button type="submit">Get rate</button>
-      </form>
-      {inputError ? <span>{inputError}</span> : getExchangeRateMessage()}
-    </>
+    <form
+      onSubmit={event => getRates(event)}
+      className="col-md-12 text-center"
+    >
+      <div className="mb-3">
+        <label htmlFor="exampleInputEmail1" className="form-label">
+          Please enter a sentence like &quot;100 USD to UAH&quot;
+          <input
+            type="text"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            value={userReq}
+            onChange={handleUserInput}
+          />
+          <div id="emailHelp" className="form-text">{inputError ? <span>{inputError}</span> : getExchangeRateMessage()}</div>
+        </label>
+      </div>
+      <button type="submit" className="btn btn-primary">Get rate</button>
+    </form>
   );
 };
