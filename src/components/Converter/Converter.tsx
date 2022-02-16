@@ -33,19 +33,19 @@ export const Converter = () => {
           exchangeTo: info[3].toUpperCase(),
         },
       });
+
+      (async () => {
+        const rateForTwo = await getExchangeRatesForTwo(info[1], info[3]);
+
+        if (rateForTwo.result !== 'error') {
+          dispatch({ type: 'SET_EXCHANGE_RATE', payload: rateForTwo.conversion_rate });
+        } else {
+          setInputError('We got some error while loading data from server');
+        }
+      })();
     } else {
       setInputError('Please follow this pattern: [money amount] [code] to [code]');
     }
-
-    (async () => {
-      const rateForTwo = await getExchangeRatesForTwo(info[1], info[3]);
-
-      if (rateForTwo.result !== 'error') {
-        dispatch({ type: 'SET_EXCHANGE_RATE', payload: rateForTwo.conversion_rate });
-      } else {
-        setInputError('We got some error while loading data from server');
-      }
-    })();
   };
 
   const getExchangeRateMessage = () => {
