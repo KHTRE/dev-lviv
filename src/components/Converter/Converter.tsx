@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getExchangeRatesForTwo } from '../../Api/Rates';
+import { SET_EXCHANGE_INFO, SET_EXCHANGE_RATE } from '../../store/actinTypes';
 
 export const Converter = () => {
   const [userReq, setUserReq] = useState('');
@@ -26,7 +27,7 @@ export const Converter = () => {
       setInputError('');
 
       dispatch({
-        type: 'SET_EXCHANGE_INFO',
+        type: SET_EXCHANGE_INFO,
         payload: {
           moneyAmount: +info[0],
           exchangeFrom: info[1].toUpperCase(),
@@ -38,7 +39,7 @@ export const Converter = () => {
         const rateForTwo = await getExchangeRatesForTwo(info[1], info[3]);
 
         if (rateForTwo.result !== 'error') {
-          dispatch({ type: 'SET_EXCHANGE_RATE', payload: rateForTwo.conversion_rate });
+          dispatch({ type: SET_EXCHANGE_RATE, payload: rateForTwo.conversion_rate });
         } else {
           setInputError('We got some error while loading data from server');
         }

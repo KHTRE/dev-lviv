@@ -1,11 +1,17 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import {
+  SET_EXCHANGE_INFO,
+  SET_USER_CURRENCY,
+  SET_EXCHANGE_RATES,
+  SET_EXCHANGE_RATE,
+} from './actinTypes';
 
 // Action types - is just a constant. MUST have a unique value.
-const SET_USER_CURRENCY = 'SET_USER_CURRENCY';
-const SET_EXCHANGE_INFO = 'SET_EXCHANGE_INFO';
-const SET_EXCHANGE_RATES = 'SET_EXCHANGE_RATES';
-const SET_EXCHANGE_RATE = 'SET_EXCHANGE_RATE';
+// const SET_USER_CURRENCY = 'SET_USER_CURRENCY';
+// const SET_EXCHANGE_INFO = 'SET_EXCHANGE_INFO';
+// const SET_EXCHANGE_RATES = 'SET_EXCHANGE_RATES';
+// const SET_EXCHANGE_RATE = 'SET_EXCHANGE_RATE';
 
 const initialState: RootState = {
   userCurrencyCode: '',

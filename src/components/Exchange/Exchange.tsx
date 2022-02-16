@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getExchangeRates } from '../../Api/Rates';
 import { codes } from '../../Api/CurrencyCodes';
+import { SET_EXCHANGE_RATES, SET_USER_CURRENCY } from '../../store/actinTypes';
 
 export const Exchange = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export const Exchange = () => {
       if (allRates.result !== 'error') {
         const exchangeRatesFromServer = Object.entries(allRates.conversion_rates);
 
-        dispatch({ type: 'SET_EXCHANGE_RATES', payload: exchangeRatesFromServer });
+        dispatch({ type: SET_EXCHANGE_RATES, payload: exchangeRatesFromServer });
       } else {
         setError('We got some error while loading data from server');
       }
@@ -25,7 +26,7 @@ export const Exchange = () => {
   }, [userCurrencyCode]);
 
   const setUserCurrency = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch({ type: 'SET_USER_CURRENCY', payload: event.target.value });
+    dispatch({ type: SET_USER_CURRENCY, payload: event.target.value });
   };
 
   const getSelectOptions = () => {
